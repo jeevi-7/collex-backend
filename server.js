@@ -139,9 +139,23 @@ app.delete("/delete-product/:id", async (req, res) => {
   }
 });
 
+// GET USER PROFILE
+app.get("/profile/:email", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.params.email });
+    const products = await Product.find({ sellerEmail: req.params.email });
+
+    res.json({ user, products });
+  } catch {
+    res.status(500).json({ message: "Profile fetch failed" });
+  }
+});
+
+
 // ================= SERVER START =================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
