@@ -73,7 +73,21 @@ app.post("/login", async (req, res) => {
 // ADD PRODUCT
 app.post("/add-product", async (req, res) => {
   try {
-    const { title, price, type, description, sellerEmail, image } = req.body;
+    const {
+      title,
+      price,
+      type,
+      description,
+      sellerEmail,
+      phone,
+      image
+    } = req.body;
+
+    console.log("ADD PRODUCT BODY:", req.body); // 🔍 DEBUG
+
+    if (!phone) {
+      return res.json({ message: "Phone number missing" });
+    }
 
     const product = new Product({
       title,
@@ -81,15 +95,19 @@ app.post("/add-product", async (req, res) => {
       type,
       description,
       sellerEmail,
+      phone,   // ✅ SAVE PHONE
       image
     });
 
     await product.save();
     res.json({ message: "Product added successfully" });
+
   } catch (err) {
+    console.error("ADD PRODUCT ERROR:", err);
     res.status(500).json({ message: "Add product failed" });
   }
 });
+
 
 // GET PRODUCTS
 app.get("/products", async (req, res) => {
@@ -126,3 +144,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
