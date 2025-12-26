@@ -6,7 +6,10 @@ const productSchema = new mongoose.Schema({
   type: String,
   description: String,
   sellerEmail: String,
+
+  phone: String,   // ✅ NEW FIELD
   image: String,
+
   createdAt: {
     type: Date,
     default: Date.now
